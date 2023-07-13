@@ -50,6 +50,7 @@ func main() {
     v1router.Post("/users", cfg.handlerUsersCreate)
     v1router.Get("/users", cfg.middlewareAuth(cfg.handlerUsersGet))
     v1router.Post("/feeds", cfg.middlewareAuth(cfg.handlerFeedsCreate))
+    v1router.Get("/feeds", cfg.handlerFeedsGet)
     r.Mount("/v1", middlewareLog(v1router))
 	
     srv := &http.Server{

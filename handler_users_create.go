@@ -20,29 +20,28 @@ func (cfg *apiConfig) handlerUsersCreate(w http.ResponseWriter, r *http.Request)
 
 	err := decoder.Decode(&userParams)
 	if err != nil {
-		log.Printf("Error decoding request parameters: %w", err)
-		respondWithError(w, http.StatusInternalServerError, "Coundn't get request body")
+        log.Printf("Error: handlerUsersCreate: decoder.Decode(%userParams): %w", err)
+		respondWithError(w, http.StatusInternalServerError, "Unable to decode request body")
 		return
 	}
     
     name := userParams.Name
     id := uuid.New()
-    createdAt := time.Now()
+    now := time.Now()
 
     ctx := context.Background()
 
-    insertedUser, err := cfg.DB.CreateUser(ctx, database.CreateUserParams{
+    user, err := cfg.DB.CreateUser(ctx, database.CreateUserParams{
         ID: id,
-        CreatedAt: createdAt,
-        UpdatedAt: createdAt,
+        CreatedAt: now,
+        UpdatedAt: now,
         Name: name,
     }) 
 	if err != nil {
-		log.Printf("Error creating user in database: %v", err)
-		respondWithError(w, http.StatusInternalServerError, "Coundn't create user in database")
+        log.Printf("Error: handlerUsersCreate: cfg.DB.CreateUser: %v", err)
+		respondWithError(w, http.StatusInternalServerError, "Unable to add user to database")
 		return
 	}
 
-	respondWithJSON(w, http.StatusCreated, insertedUser)
+	respondWithJSON(w, http.StatusCreated, user)
 }
-
