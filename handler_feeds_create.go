@@ -21,7 +21,7 @@ func (cfg *apiConfig) handlerFeedsCreate(w http.ResponseWriter, r *http.Request,
 
 	err := decoder.Decode(&feedParams)
 	if err != nil {
-        log.Printf("Error: decoder.Decode(&feedParams): %w", err)
+        log.Printf("Error: handlerFeedsCreate: decoder.Decode(&feedParams): %w", err)
 		respondWithError(w, http.StatusInternalServerError, "Unable to decode request body")
 		return
 	}
@@ -43,7 +43,7 @@ func (cfg *apiConfig) handlerFeedsCreate(w http.ResponseWriter, r *http.Request,
         UserID: userID,
     }) 
 	if err != nil {
-        log.Printf("Error: database.CreateFeed: %v", err)
+        log.Printf("Error: handlerFeedsCreate: database.CreateFeed: %v", err)
 		respondWithError(w, http.StatusInternalServerError, "Unable to add feed to database")
 		return
 	}
