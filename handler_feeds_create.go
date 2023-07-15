@@ -47,6 +47,29 @@ func (cfg *apiConfig) handlerFeedsCreate(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
-	respondWithJSON(w, http.StatusCreated, feed)
+    followID := uuid.New()
+
+    follow, err := cfg.DB.CreateFollow(ctx, database.CreateFollowParams{
+        ID: followID,
+        FeedID: feed.ID,
+        UserID: userID,
+        CreatedAt: now,
+        UpdatedAt: now,
+    }) 
+	if err != nil {
+        log.Printf("Error: handlerFeedsCreate: cfg.DB.CreateFollow: %v", err)
+		respondWithError(w, http.StatusInternalServerError, "Unable to add follow to database")
+		return
+	}
+
+    respBody := struct {
+        Feed database.Feed `json:"feed"`
+        Follow database.FeedFollow `json:"feed_follow"`
+    }{
+        Feed: feed,
+        Follow: follow,
+    }
+
+	respondWithJSON(w, http.StatusCreated, respBody)
 }
 

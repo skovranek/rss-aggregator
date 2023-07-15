@@ -18,6 +18,6 @@ func (cfg *apiConfig) handlerFeedsGet(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-	respondWithJSON(w, http.StatusCreated, feeds)
+	respondWithJSON(w, http.StatusOK, feeds)
 }
 
