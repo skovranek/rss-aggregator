@@ -33,7 +33,7 @@ func (cfg *apiConfig) handlerFeedsCreate(w http.ResponseWriter, r *http.Request,
     userID := user.ID
     ctx := context.Background()
 
-    feed, err := cfg.DB.CreateFeed(ctx, database.CreateFeedParams{
+    databaseFeed, err := cfg.DB.CreateFeed(ctx, database.CreateFeedParams{
         ID: id,
         CreatedAt: now,
         UpdatedAt: now,
@@ -46,6 +46,8 @@ func (cfg *apiConfig) handlerFeedsCreate(w http.ResponseWriter, r *http.Request,
 		respondWithError(w, http.StatusInternalServerError, "Unable to add feed to database")
 		return
 	}
+
+    feed := databaseFeedToFeed(databaseFeed)
 
     followID := uuid.New()
 
