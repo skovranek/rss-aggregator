@@ -31,7 +31,6 @@ func (cfg *apiConfig) handlerFeedsCreate(w http.ResponseWriter, r *http.Request,
     id := uuid.New()
     now := time.Now()
     userID := user.ID
-
     ctx := context.Background()
 
     feed, err := cfg.DB.CreateFeed(ctx, database.CreateFeedParams{

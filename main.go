@@ -20,7 +20,7 @@ type apiConfig struct {
 func main() {
     err := godotenv.Load()
     if err != nil {
-        log.Fatal(`Error loading ".env" file`)
+        log.Fatal(`Error: main.go: cannot load ".env" file`)
     }
     port := os.Getenv("PORT")
     dbURL := os.Getenv("CONN")
@@ -51,6 +51,7 @@ func main() {
     v1router.Get("/users", cfg.middlewareAuth(cfg.handlerUsersGet))
     v1router.Post("/feeds", cfg.middlewareAuth(cfg.handlerFeedsCreate))
     v1router.Get("/feeds", cfg.handlerFeedsGet)
+    v1router.Post("/feed_follows", cfg.middlewareAuth(cfg.handlerFollowsCreate))
     r.Mount("/v1", middlewareLog(v1router))
 	
     srv := &http.Server{

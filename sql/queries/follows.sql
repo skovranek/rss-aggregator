@@ -1,13 +1,13 @@
 -- name: CreateFollow :one
-INSERT INTO follows (id, created_at, updated_at, user_id, feed_id)
+INSERT INTO feed_follows (id, feed_id, user_id, created_at, updated_at)
 VALUES ($1, $2, $3, $4, $5)
 RETURNING *;
 
 -- name: DeleteFollow :exec
-DELETE FROM follows
+DELETE FROM feed_follows
 WHERE id = $1;
 
 -- name: GetFollows :many
-SELECT * FROM follows
+SELECT * FROM feed_follows
 WHERE user_id = $1;
 
