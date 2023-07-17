@@ -11,7 +11,7 @@ import (
 func (cfg *apiConfig) handlerFeedsGet(w http.ResponseWriter, r *http.Request) {
     ctx := context.Background()
 
-    databaseFeeds, err := cfg.DB.GetAllFeeds(ctx)
+    dbFeeds, err := cfg.DB.GetAllFeeds(ctx)
     if err != nil {
         log.Printf("Error: handlerFeedsGet: cfg.DB.GetAllFeeds: %v", err)
         respondWithError(w, http.StatusInternalServerError, "Unable to retrieve feeds from database")
@@ -19,8 +19,8 @@ func (cfg *apiConfig) handlerFeedsGet(w http.ResponseWriter, r *http.Request) {
     }
 
     feeds := []Feed{}
-    for _, databaseFeed := range databaseFeeds {
-        feed := databaseFeedToFeed(databaseFeed)
+    for _, dbFeed := range dbFeeds {
+        feed := databaseFeedToFeed(dbFeed)
         feeds = append(feeds, feed)
     }
 

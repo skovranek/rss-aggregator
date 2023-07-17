@@ -20,7 +20,7 @@ func (cfg *apiConfig) handlerUsersCreate(w http.ResponseWriter, r *http.Request)
 
 	err := decoder.Decode(&userParams)
 	if err != nil {
-        log.Printf("Error: handlerUsersCreate: decoder.Decode(%userParams): %w", err)
+        log.Printf("Error: handlerUsersCreate: decoder.Decode(%%userParams): %v", err)
 		respondWithError(w, http.StatusInternalServerError, "Unable to decode request body")
 		return
 	}

@@ -20,7 +20,7 @@ func (cfg *apiConfig) handlerFollowsCreate(w http.ResponseWriter, r *http.Reques
 
 	err := decoder.Decode(&followParams)
 	if err != nil {
-        log.Printf("Error: handlerFollowsCreate: decoder.Decode(followParams): %w", err)
+        log.Printf("Error: handlerFollowsCreate: decoder.Decode(followParams): %v", err)
 		respondWithError(w, http.StatusInternalServerError, "Unable to decode request body")
 		return
 	}

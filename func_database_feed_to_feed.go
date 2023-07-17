@@ -18,15 +18,15 @@ type Feed struct {
 	LastFetchedAt time.Time
 }
 
-func databaseFeedToFeed(feed database.Feed) Feed {
+func databaseFeedToFeed(dbFeed database.Feed) Feed {
     return Feed{
-        ID: feed.ID,
-        CreatedAt: feed.CreatedAt,
-        UpdatedAt: feed.UpdatedAt,
-        Name: feed.Name,
-        Url: feed.Url,
-        UserID: feed.UserID,
-        LastFetchedAt: feed.LastFetchedAt.Time,
+        ID: dbFeed.ID,
+        CreatedAt: dbFeed.CreatedAt,
+        UpdatedAt: dbFeed.UpdatedAt,
+        Name: dbFeed.Name,
+        Url: dbFeed.Url,
+        UserID: dbFeed.UserID,
+        LastFetchedAt: dbFeed.LastFetchedAt.Time,
     }
 }
 

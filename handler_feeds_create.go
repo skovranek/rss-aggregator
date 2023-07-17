@@ -21,7 +21,7 @@ func (cfg *apiConfig) handlerFeedsCreate(w http.ResponseWriter, r *http.Request,
 
 	err := decoder.Decode(&feedParams)
 	if err != nil {
-        log.Printf("Error: handlerFeedsCreate: decoder.Decode(&feedParams): %w", err)
+        log.Printf("Error: handlerFeedsCreate: decoder.Decode(&feedParams): %v", err)
 		respondWithError(w, http.StatusInternalServerError, "Unable to decode request body")
 		return
 	}
@@ -33,7 +33,7 @@ func (cfg *apiConfig) handlerFeedsCreate(w http.ResponseWriter, r *http.Request,
     userID := user.ID
     ctx := context.Background()
 
-    databaseFeed, err := cfg.DB.CreateFeed(ctx, database.CreateFeedParams{
+    dbFeed, err := cfg.DB.CreateFeed(ctx, database.CreateFeedParams{
         ID: id,
         CreatedAt: now,
         UpdatedAt: now,
@@ -47,7 +47,7 @@ func (cfg *apiConfig) handlerFeedsCreate(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
-    feed := databaseFeedToFeed(databaseFeed)
+    feed := databaseFeedToFeed(dbFeed)
 
     followID := uuid.New()
 
@@ -65,7 +65,7 @@ func (cfg *apiConfig) handlerFeedsCreate(w http.ResponseWriter, r *http.Request,
 	}
 
     respBody := struct {
-        Feed database.Feed `json:"feed"`
+        Feed Feed `json:"feed"`
         Follow database.FeedFollow `json:"feed_follow"`
     }{
         Feed: feed,
