@@ -8,7 +8,7 @@ SELECT * FROM feeds;
 
 -- name: GetNextFeedsToFetch :many
 SELECT * FROM feeds
-ORDER BY last_fetched_at
+ORDER BY last_fetched_at NULLS FIRST, created_at
 LIMIT $1;
 
 -- name: MarkFeedFetched :exec

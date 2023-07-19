@@ -15,6 +15,7 @@ import (
 
 type apiConfig struct {
 	DB *database.Queries
+    Limit int32
 }
 
 func main() {
@@ -28,7 +29,9 @@ func main() {
     dbQueries := database.New(db)
     cfg := apiConfig{
         DB: dbQueries,
+        Limit: int32(10),
     }
+    go cfg.workerFetchFeeds()
 
     r := chi.NewRouter()
     r.Use(cors.Handler(cors.Options{
