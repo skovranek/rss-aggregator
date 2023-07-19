@@ -1,11 +1,11 @@
 package main
 
 import (
-    "time"
+	"time"
 
-    "github.com/google/uuid"
+	"github.com/google/uuid"
 
-    "github.com/skovranek/rss_aggregator/internal/database"
+	"github.com/skovranek/rss_aggregator/internal/database"
 )
 
 type Feed struct {
@@ -19,14 +19,13 @@ type Feed struct {
 }
 
 func databaseFeedToFeed(dbFeed database.Feed) Feed {
-    return Feed{
-        ID: dbFeed.ID,
-        CreatedAt: dbFeed.CreatedAt,
-        UpdatedAt: dbFeed.UpdatedAt,
-        Name: dbFeed.Name,
-        Url: dbFeed.Url,
-        UserID: dbFeed.UserID,
-        LastFetchedAt: dbFeed.LastFetchedAt.Time,
-    }
+	return Feed{
+		ID:            dbFeed.ID,
+		CreatedAt:     dbFeed.CreatedAt,
+		UpdatedAt:     dbFeed.UpdatedAt,
+		Name:          dbFeed.Name,
+		Url:           dbFeed.Url,
+		UserID:        dbFeed.UserID,
+		LastFetchedAt: dbFeed.LastFetchedAt.Time,
+	}
 }
-

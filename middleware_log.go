@@ -1,8 +1,8 @@
 package main
 
 import (
-    "log"
-    "net/http"
+	"log"
+	"net/http"
 )
 
 func middlewareLog(next http.Handler) http.Handler {
@@ -11,4 +11,3 @@ func middlewareLog(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
-
