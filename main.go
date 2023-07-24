@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
@@ -21,17 +22,22 @@ type apiConfig struct {
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal(`Error: main.go: cannot load ".env" file`)
+		log.Fatal(`Error: main.go: godotenv.Load(): cannot load ".env" file`)
 	}
 	port := os.Getenv("PORT")
 	dbURL := os.Getenv("CONN")
 	db, err := sql.Open("postgres", dbURL)
+	if err != nil {
+		log.Fatalf("Error: main.go: sql.Open(): cannot open database: %v", err)
+	}
+	defer db.Close()
+
 	dbQueries := database.New(db)
 	cfg := apiConfig{
 		DB:    dbQueries,
 		Limit: int32(10),
 	}
-	go cfg.workerFetchFeeds()
+	go cfg.workerScrapeFeeds()
 
 	r := chi.NewRouter()
 	r.Use(cors.Handler(cors.Options{
@@ -56,12 +62,14 @@ func main() {
 	v1router.Get("/feeds", cfg.handlerFeedsGet)
 	v1router.Post("/feed_follows", cfg.middlewareAuth(cfg.handlerFollowsCreate))
 	v1router.Delete("/feed_follows/{feedFollowID}", cfg.handlerFollowsDelete)
-	v1router.Get("/feed_follows/", cfg.middlewareAuth(cfg.handlerFollowsGet))
+	v1router.Get("/feed_follows", cfg.middlewareAuth(cfg.handlerFollowsGet))
+    v1router.Get("/posts", cfg.middlewareAuth(cfg.handlerPostsGet))
 	r.Mount("/v1", middlewareLog(v1router))
 
 	srv := &http.Server{
-		Handler: r,
-		Addr:    "localhost:" + port,
+		Handler:           r,
+		Addr:              "localhost:" + port,
+		ReadHeaderTimeout: 10 * time.Second,
 	}
 
 	log.Printf("Starting server on 'localhost:%s'", port)

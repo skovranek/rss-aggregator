@@ -6,11 +6,9 @@ import (
 	"net/http"
 
 	_ "github.com/lib/pq"
-
-	"github.com/skovranek/rss_aggregator/internal/database"
 )
 
-func (cfg *apiConfig) handlerFollowsGet(w http.ResponseWriter, r *http.Request, user database.User) {
+func (cfg *apiConfig) handlerFollowsGet(w http.ResponseWriter, r *http.Request, user User) {
 	ctx := context.Background()
 
 	follows, err := cfg.DB.GetFollows(ctx, user.ID)

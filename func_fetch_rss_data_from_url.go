@@ -3,49 +3,51 @@ package main
 import (
 	"encoding/xml"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
-type RSS struct {
+type RSSData struct {
 	URL     string `xml:"url"`
 	Channel struct {
-		Title         string `xml:"title"`
-		Description   string `xml:"description"`
-		LastBuildDate string `xml:"lastBuildDate"`
-		Items         []struct {
-			Title       string `xml:"title"`
-			Link        string `xml:"link"`
-			PubDate     string `xml:"pubDate"`
-			Description string `xml:"Description"`
-		} `xml:"item"`
+		Title         *string `xml:"title"`
+		Description   *string `xml:"description"`
+		LastBuildDate *string `xml:"lastBuildDate"`
+		Items         []Item  `xml:"item"`
 	} `xml:"channel"`
 }
 
-func fetchRSSDataFromURL(URL string) (RSS, error) {
-	response, err := http.Get(URL)
+type Item struct {
+	Title       *string `xml:"title"`
+	Link        string `xml:"link"`
+	PubDate     *string `xml:"pubDate"`
+	Description *string `xml:"description"`
+}
+
+func fetchRSSDataFromURL(URL string) (RSSData, error) {
+	response, err := http.Get(URL) //#nosec G107
 	if err != nil {
-		return RSS{}, err
+		return RSSData{}, err
 	}
 	defer response.Body.Close()
 
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if response.StatusCode > 299 {
-		err = fmt.Errorf("Error: response failed. status-code: %d, body: %s", response.StatusCode, body)
-		return RSS{}, err
+		err = fmt.Errorf("error: response failed. status-code: %d, body: %s", response.StatusCode, body)
+		return RSSData{}, err
 	}
 	if err != nil {
-		return RSS{}, err
+		return RSSData{}, err
 	}
 
-	rss := RSS{}
-	err = xml.Unmarshal(body, &rss)
+	data := RSSData{}
+	err = xml.Unmarshal(body, &data)
 	if err != nil {
-		return RSS{}, err
+		return RSSData{}, err
 	}
-	if rss.URL == "" {
-		rss.URL = URL
+	if data.URL == "" {
+		data.URL = URL
 	}
 
-	return rss, nil
+	return data, nil
 }

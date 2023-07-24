@@ -5,11 +5,9 @@ import (
 	"log"
 	"net/http"
 	"strings"
-
-	"github.com/skovranek/rss_aggregator/internal/database"
 )
 
-type authedHandler func(http.ResponseWriter, *http.Request, database.User)
+type authedHandler func(http.ResponseWriter, *http.Request, User)
 
 func (cfg *apiConfig) middlewareAuth(next authedHandler) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -18,12 +16,15 @@ func (cfg *apiConfig) middlewareAuth(next authedHandler) http.HandlerFunc {
 
 		ctx := context.Background()
 
-		user, err := cfg.DB.GetUserByAPIKey(ctx, apiKey)
+		dbUser, err := cfg.DB.GetUserByAPIKey(ctx, apiKey)
 		if err != nil {
 			log.Printf("Error: middlewareAuth: cfg.DB.GetUserByAPIKey: %v", err)
 			respondWithError(w, http.StatusInternalServerError, "Unable to retrieve user from database")
 			return
 		}
-		next(w, r, user)
+
+        user := databaseUserToUser(dbUser)
+
+        next(w, r, user)
 	})
 }

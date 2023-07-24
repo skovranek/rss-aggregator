@@ -12,7 +12,7 @@ import (
 	"github.com/skovranek/rss_aggregator/internal/database"
 )
 
-func (cfg *apiConfig) handlerFollowsCreate(w http.ResponseWriter, r *http.Request, user database.User) {
+func (cfg *apiConfig) handlerFollowsCreate(w http.ResponseWriter, r *http.Request, user User) {
 	decoder := json.NewDecoder(r.Body)
 	followParams := struct {
 		FeedID string `json:"feed_id"`

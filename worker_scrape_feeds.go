@@ -2,19 +2,19 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"sync"
 	"time"
+
 )
 
-func (cfg *apiConfig) workerFetchFeeds() {
+func (cfg *apiConfig) workerScrapeFeeds() {
 	wg := sync.WaitGroup{}
 
 	for {
 		feeds, err := cfg.getFeedsToFetch()
 		if err != nil {
-			log.Printf("Error: cfg.workerFetchFeeds: cfg.getFeedsToFetch: %v", err)
+			log.Printf("Error: cfg.workerScrapeFeeds: cfg.getFeedsToFetch: %v", err)
 			return
 		}
 
@@ -26,17 +26,20 @@ func (cfg *apiConfig) workerFetchFeeds() {
 
 				data, err := fetchRSSDataFromURL(feed.Url)
 				if err != nil {
-					log.Printf("Error: cfg.workerFetchFeeds: fetchRSSDataFromURL %v", err)
+					log.Printf("Error: cfg.workerScrapeFeeds: fetchRSSDataFromURL %v", err)
 				}
 
 				ctx := context.Background()
 				err = cfg.DB.MarkFeedFetched(ctx, feed.ID)
 				if err != nil {
-					log.Printf("Error: cfg.workerFetchFeeds: cfg.DB.MarkFeedFetched: %v", err)
+					log.Printf("Error: cfg.workerScrapeFeeds: cfg.DB.MarkFeedFetched: %v", err)
 				}
 
 				for _, item := range data.Channel.Items {
-					fmt.Println(item.Title)
+				    err = cfg.createPost(ctx, feed.ID, item)
+                    if err != nil {
+                        log.Printf("Error: cfg.workerScrapeFeeds: cfg.CreatePost(ctx, item, feed.ID): %s", err)
+                    }
 				}
 			}(feed)
 		}

@@ -12,7 +12,7 @@ import (
 	"github.com/skovranek/rss_aggregator/internal/database"
 )
 
-func (cfg *apiConfig) handlerFeedsCreate(w http.ResponseWriter, r *http.Request, user database.User) {
+func (cfg *apiConfig) handlerFeedsCreate(w http.ResponseWriter, r *http.Request, user User) {
 	decoder := json.NewDecoder(r.Body)
 	feedParams := struct {
 		Name string `json:"name"`
