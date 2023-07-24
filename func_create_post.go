@@ -18,13 +18,13 @@ func (cfg *apiConfig) createPost(ctx context.Context, feedID uuid.UUID, item Ite
 	id := uuid.New()
 
     titleNullStr := sql.NullString{}
-    err := titleNullStr.Scan(item.Title)
+    err := titleNullStr.Scan(*item.Title)
     if err != nil {
         err = fmt.Errorf("Error: cfg.createPost: titleNullStr.Scan(item.Title): %v", err)
     }
 
     descriptionNullStr := sql.NullString{}
-    err = descriptionNullStr.Scan(item.Description)
+    err = descriptionNullStr.Scan(*item.Description)
     if err != nil {
         err = fmt.Errorf("Error: cfg.createPost: descriptionNullStr.Scan(item.Description): %v", err)
     }
