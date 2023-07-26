@@ -4,15 +4,20 @@ import (
 	"context"
 	"log"
 	"net/http"
-	"strings"
+
+	"github.com/skovranek/rss_aggregator/internal/auth"
 )
 
 type authedHandler func(http.ResponseWriter, *http.Request, User)
 
 func (cfg *apiConfig) middlewareAuth(next authedHandler) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		apiKeyAndPrefix := r.Header.Get("Authorization")
-		apiKey := strings.TrimPrefix(apiKeyAndPrefix, "ApiKey ")
+		apiKey, err := auth.GetAPIKey(r.Header)
+		if err != nil {
+			log.Printf("Error: middlewareAuth: auth.GetAPIKey: %v", err)
+			respondWithError(w, http.StatusUnauthorized, "Unable to parse API Key from Authorization header")
+			return
+		}
 
 		ctx := context.Background()
 
@@ -23,8 +28,8 @@ func (cfg *apiConfig) middlewareAuth(next authedHandler) http.HandlerFunc {
 			return
 		}
 
-        user := databaseUserToUser(dbUser)
+		user := databaseUserToUser(dbUser)
 
-        next(w, r, user)
+		next(w, r, user)
 	})
 }

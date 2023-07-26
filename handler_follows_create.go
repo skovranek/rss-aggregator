@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"log"
 	"net/http"
 	"time"
@@ -13,14 +12,9 @@ import (
 )
 
 func (cfg *apiConfig) handlerFollowsCreate(w http.ResponseWriter, r *http.Request, user User) {
-	decoder := json.NewDecoder(r.Body)
-	followParams := struct {
-		FeedID string `json:"feed_id"`
-	}{}
-
-	err := decoder.Decode(&followParams)
+    followParams, err := getFollowParams(r.Body)
 	if err != nil {
-		log.Printf("Error: handlerFollowsCreate: decoder.Decode(followParams): %v", err)
+		log.Printf("Error: handlerFollowsCreate: getFeedParams(r.Body): %v", err)
 		respondWithError(w, http.StatusInternalServerError, "Unable to decode request body")
 		return
 	}

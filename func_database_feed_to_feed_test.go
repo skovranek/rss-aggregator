@@ -43,31 +43,16 @@ func TestDBFeedToFeed(t *testing.T) {
 			},
 		},
 		{
-			input: database.Feed{
-				ID:        id,
-				CreatedAt: timeStamp,
-				UpdatedAt: timeStamp,
-				Name:      testStr,
-				Url:       testStr,
-				UserID:    id,
-			},
-			expect: Feed{
-				ID:            id,
-				CreatedAt:     timeStamp,
-				UpdatedAt:     timeStamp,
-				Name:          testStr,
-				Url:           testStr,
-				UserID:        id,
-				LastFetchedAt: time.Time{},
-			},
-		},
+			input: database.Feed{},
+			expect: Feed{},
+        },
 	}
 
 	for i, test := range tests {
 		t.Run(fmt.Sprintf("Test Case #%v:", i), func(t *testing.T) {
 			output := databaseFeedToFeed(test.input)
 			if output != test.expect {
-				t.Errorf("Unexpected:\n%v", output)
+				t.Errorf("Unexpected:\n%v\n", output)
 				return
 			}
 		})

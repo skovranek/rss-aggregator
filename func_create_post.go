@@ -14,32 +14,25 @@ import (
 const DUPLICATE_URL_KEY_ERR_MSG = `pq: duplicate key value violates unique constraint "posts_url_key"`
 
 func (cfg *apiConfig) createPost(ctx context.Context, feedID uuid.UUID, item Item) error {
-	now := time.Now()
 	id := uuid.New()
+	now := time.Now()
 
-    titleNullStr := sql.NullString{}
-    err := titleNullStr.Scan(*item.Title)
-    if err != nil {
-        err = fmt.Errorf("Error: cfg.createPost: titleNullStr.Scan(item.Title): %v", err)
-    }
-
-    descriptionNullStr := sql.NullString{}
-    err = descriptionNullStr.Scan(*item.Description)
-    if err != nil {
-        err = fmt.Errorf("Error: cfg.createPost: descriptionNullStr.Scan(item.Description): %v", err)
-    }
-
-	publishedAt, err := time.Parse(time.RFC1123Z, *item.PubDate)
+	titleNullStr, err := strPtrToSQLNullStr(item.Title)
 	if err != nil {
-		err = fmt.Errorf("Error: cfg.createPost: time.Parse(format, item.PubDate): %v", err)
-        return err
+		err = fmt.Errorf("strPtrToSQLNullStr(itme.Title): %v", err)
 	}
-	publishedAtNullTime := sql.NullTime{}
-	err = publishedAtNullTime.Scan(publishedAt)
+
+	descriptionNullStr, err := strPtrToSQLNullStr(item.Description)
 	if err != nil {
-		err = fmt.Errorf("Error: cfg.CreatePost: publishedAtNullTime.Scan(publishedAt): %v", err)
-	    return err
-    }
+		err = fmt.Errorf("strPtrToSQLNullStr(itme.Description): %v", err)
+	}
+
+	publishedAtNullTime, err := strPtrToSQLNullTime(item.PubDate)
+	if err != nil {
+		err = fmt.Errorf("strPtrToSQLNullTime(item.PubDate): %v", err)
+		return err
+	}
+
 	_, err = cfg.DB.CreatePost(ctx, database.CreatePostParams{
 		ID:          id,
 		CreatedAt:   now,
@@ -51,9 +44,43 @@ func (cfg *apiConfig) createPost(ctx context.Context, feedID uuid.UUID, item Ite
 		FeedID:      feedID,
 	})
 	if err != nil && err.Error() != DUPLICATE_URL_KEY_ERR_MSG {
-		err = fmt.Errorf("Error: cfg.createPost: cfg.DB.CreatePost: %v", err)
+		err = fmt.Errorf("cfg.DB.CreatePost: %v", err)
 		return err
 	}
 
-    return nil
+	return nil
+}
+
+func strPtrToSQLNullStr(strPtr *string) (sql.NullString, error) {
+    if strPtr == nil {
+        return sql.NullString{}, nil
+    }
+
+	nullStr := sql.NullString{}
+	err := nullStr.Scan(*strPtr)
+	if err != nil {
+		err = fmt.Errorf("sql.NullString{}.Scan(*strPtr): %v", err)
+		return sql.NullString{}, err
+	}
+	return nullStr, nil
+}
+
+func strPtrToSQLNullTime(strPtr *string) (sql.NullTime, error) {
+    if strPtr == nil {
+        return sql.NullTime{}, nil
+    }
+
+    parsedTime, err := time.Parse(time.RFC1123Z, *strPtr)
+	if err != nil {
+		err = fmt.Errorf("time.Parse(time.RFC1123Z, *strPtr): %v", err)
+		return sql.NullTime{}, err
+	}
+
+	nullTime := sql.NullTime{}
+	err = nullTime.Scan(parsedTime)
+	if err != nil {
+		err = fmt.Errorf("sql.NullTime{}.Scan(parsedTime): %v", err)
+		return sql.NullTime{}, err
+	}
+	return nullTime, nil
 }

@@ -19,7 +19,7 @@ type RSSData struct {
 
 type Item struct {
 	Title       *string `xml:"title"`
-	Link        string `xml:"link"`
+	Link        string  `xml:"link"`
 	PubDate     *string `xml:"pubDate"`
 	Description *string `xml:"description"`
 }
@@ -33,7 +33,7 @@ func fetchRSSDataFromURL(URL string) (RSSData, error) {
 
 	body, err := io.ReadAll(response.Body)
 	if response.StatusCode > 299 {
-		err = fmt.Errorf("error: response failed. status-code: %d, body: %s", response.StatusCode, body)
+		err = fmt.Errorf("response failure: status code: %d, body: %s", response.StatusCode, body)
 		return RSSData{}, err
 	}
 	if err != nil {

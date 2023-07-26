@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"log"
 	"net/http"
 	"time"
@@ -13,17 +12,12 @@ import (
 )
 
 func (cfg *apiConfig) handlerUsersCreate(w http.ResponseWriter, r *http.Request) {
-	decoder := json.NewDecoder(r.Body)
-	userParams := struct {
-		Name string `json:"name"`
-	}{}
-
-	err := decoder.Decode(&userParams)
+    userParams, err := getUserParams(r.Body)
 	if err != nil {
-		log.Printf("Error: handlerUsersCreate: decoder.Decode(%%userParams): %v", err)
+		log.Printf("Error: handlerUsersCreate: getUserParams(r.Body): %v", err)
 		respondWithError(w, http.StatusInternalServerError, "Unable to decode request body")
 		return
-	}
+    }
 
 	name := userParams.Name
 	id := uuid.New()

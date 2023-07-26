@@ -5,19 +5,19 @@ import (
 	"log"
 	"sync"
 	"time"
-
 )
 
-func (cfg *apiConfig) workerScrapeFeeds() {
-	wg := sync.WaitGroup{}
+func (cfg *apiConfig) workerScrapeFeeds(interval time.Duration) {
+	ticker := time.NewTicker(interval)
 
-	for {
+	for ; ; <-ticker.C {
 		feeds, err := cfg.getFeedsToFetch()
 		if err != nil {
 			log.Printf("Error: cfg.workerScrapeFeeds: cfg.getFeedsToFetch: %v", err)
 			return
 		}
 
+		wg := sync.WaitGroup{}
 		for _, feed := range feeds {
 			wg.Add(1)
 
@@ -36,14 +36,13 @@ func (cfg *apiConfig) workerScrapeFeeds() {
 				}
 
 				for _, item := range data.Channel.Items {
-				    err = cfg.createPost(ctx, feed.ID, item)
-                    if err != nil {
-                        log.Printf("Error: cfg.workerScrapeFeeds: cfg.CreatePost(ctx, item, feed.ID): %s", err)
-                    }
+					err = cfg.createPost(ctx, feed.ID, item)
+					if err != nil {
+						log.Printf("Error: cfg.workerScrapeFeeds: cfg.CreatePost(ctx, item, feed.ID): %v", err)
+					}
 				}
 			}(feed)
 		}
 		wg.Wait()
-		time.Sleep(time.Minute)
 	}
 }
