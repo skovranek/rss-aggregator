@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+    "strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -43,8 +44,8 @@ func (cfg *apiConfig) createPost(ctx context.Context, feedID uuid.UUID, item Ite
 		PublishedAt: publishedAtNullTime,
 		FeedID:      feedID,
 	})
-	if err != nil && err.Error() != DUPLICATE_URL_KEY_ERR_MSG {
-		err = fmt.Errorf("cfg.DB.CreatePost: %v", err)
+	if err != nil && !strings.Contains(err.Error(), DUPLICATE_URL_KEY_ERR_MSG) {
+		err = fmt.Errorf("unable to add post to database: %v", err)
 		return err
 	}
 

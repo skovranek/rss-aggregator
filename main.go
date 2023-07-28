@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"log"
 	"net/http"
 	"os"
@@ -24,15 +23,13 @@ func main() {
 	if err != nil {
 		log.Fatal(`Error: main.go: godotenv.Load(): cannot load ".env" file`)
 	}
-	port := os.Getenv("PORT")
+
+    port := os.Getenv("PORT")
+
 	dbURL := os.Getenv("CONN")
-	db, err := sql.Open("postgres", dbURL)
-	if err != nil {
-		log.Fatalf("Error: main.go: sql.Open(): cannot open database: %v", err)
-	}
+    dbQueries, db := database.InitDB(dbURL)
 	defer db.Close()
 
-	dbQueries := database.New(db)
 	cfg := apiConfig{
 		DB:    dbQueries,
 		Limit: int32(10),

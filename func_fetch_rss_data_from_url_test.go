@@ -25,18 +25,21 @@ func TestFetchRSSDataFromURL(t *testing.T) {
 		{
 			input:      "https://wagslane.dev/index.xml",
 			expectURL:  "https://wagslane.dev/index.xml",
-			expectLink: "https://wagslane.dev/posts/zen-of-proverbs/",
+            //expectedLink has to be updated every so often to the latest blog post
+			expectLink: "https://blog.boot.dev/news/bootdev-beat-2023-08/", 
+            expectErr:  "not expecting an error",
 		},
 		{
 			input:      "https://blog.boot.dev/index.xml",
 			expectURL:  "https://blog.boot.dev/index.xml",
 			expectLink: "https://blog.boot.dev/backend/django-for-backend/",
-		},
+		    expectErr:  "not expecting an error",
+        },
 	}
 
 	for i, test := range tests {
 		t.Run(fmt.Sprintf("Test Case #%v:", i), func(t *testing.T) {
-			output, err := fetchRSSDataFromURL(test.input)
+            output, err := fetchRSSDataFromURL(test.input)
 			if err != nil && !strings.Contains(err.Error(), test.expectErr) {
 				t.Errorf("Unexpected: %v\n", err)
 				return

@@ -27,4 +27,4 @@ rss_aggregator
 # hidden
 .DS_Store
 .env
-
+/internal/database/.env
