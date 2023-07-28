@@ -12,11 +12,12 @@ func TestFetchRSSDataFromURL(t *testing.T) {
 		expectURL  string
 		expectLink string
 		expectErr  string
-	}{{
-		input:     "google.com",
-		expectURL: "",
-		expectErr: "unsupported protocol scheme",
-	},
+	}{
+		{
+			input:     "google.com",
+			expectURL: "",
+			expectErr: "unsupported protocol scheme",
+		},
 		{
 			input:     "https://google.com",
 			expectURL: "",
@@ -26,13 +27,13 @@ func TestFetchRSSDataFromURL(t *testing.T) {
 			input:     "https://wagslane.dev/index.xml",
 			expectURL: "https://wagslane.dev/index.xml",
 			//expectedLink has to be updated every so often to the latest blog post
-			expectLink: "https://blog.boot.dev/news/bootdev-beat-2023-08/",
+			expectLink: "https://wagslane.dev/posts/zen-of-proverbs/",
 			expectErr:  "not expecting an error",
 		},
 		{
 			input:      "https://blog.boot.dev/index.xml",
 			expectURL:  "https://blog.boot.dev/index.xml",
-			expectLink: "https://blog.boot.dev/backend/django-for-backend/",
+			expectLink: "https://blog.boot.dev/news/bootdev-beat-2023-08/",
 			expectErr:  "not expecting an error",
 		},
 	}

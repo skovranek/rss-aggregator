@@ -17,7 +17,7 @@ func getFeedParams(readCloser io.ReadCloser) (FeedParams, error) {
 
 	err := decoder.Decode(&feedParams)
 	if err != nil {
-        err = fmt.Errorf("unable to decode request body and get feed parameters: %v", err)
+		err = fmt.Errorf("unable to decode request body and get feed parameters: %v", err)
 		return FeedParams{}, err
 	}
 
