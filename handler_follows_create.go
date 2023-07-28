@@ -12,7 +12,7 @@ import (
 )
 
 func (cfg *apiConfig) handlerFollowsCreate(w http.ResponseWriter, r *http.Request, user User) {
-    followParams, err := getFollowParams(r.Body)
+	followParams, err := getFollowParams(r.Body)
 	if err != nil {
 		log.Printf("Error: handlerFollowsCreate: getFeedParams(r.Body): %v", err)
 		respondWithError(w, http.StatusInternalServerError, "Unable to decode request body")

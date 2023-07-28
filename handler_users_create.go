@@ -12,12 +12,12 @@ import (
 )
 
 func (cfg *apiConfig) handlerUsersCreate(w http.ResponseWriter, r *http.Request) {
-    userParams, err := getUserParams(r.Body)
+	userParams, err := getUserParams(r.Body)
 	if err != nil {
 		log.Printf("Error: handlerUsersCreate: getUserParams(r.Body): %v", err)
 		respondWithError(w, http.StatusInternalServerError, "Unable to decode request body")
 		return
-    }
+	}
 
 	name := userParams.Name
 	id := uuid.New()

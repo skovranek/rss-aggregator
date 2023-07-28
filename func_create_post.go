@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-    "strings"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -20,18 +20,17 @@ func (cfg *apiConfig) createPost(ctx context.Context, feedID uuid.UUID, item Ite
 
 	titleNullStr, err := strPtrToSQLNullStr(item.Title)
 	if err != nil {
-		err = fmt.Errorf("strPtrToSQLNullStr(itme.Title): %v", err)
+		return fmt.Errorf("strPtrToSQLNullStr(itme.Title): %v", err)
 	}
 
 	descriptionNullStr, err := strPtrToSQLNullStr(item.Description)
 	if err != nil {
-		err = fmt.Errorf("strPtrToSQLNullStr(itme.Description): %v", err)
+		return fmt.Errorf("strPtrToSQLNullStr(itme.Description): %v", err)
 	}
 
 	publishedAtNullTime, err := strPtrToSQLNullTime(item.PubDate)
 	if err != nil {
-		err = fmt.Errorf("strPtrToSQLNullTime(item.PubDate): %v", err)
-		return err
+		return fmt.Errorf("strPtrToSQLNullTime(item.PubDate): %v", err)
 	}
 
 	_, err = cfg.DB.CreatePost(ctx, database.CreatePostParams{
@@ -53,9 +52,9 @@ func (cfg *apiConfig) createPost(ctx context.Context, feedID uuid.UUID, item Ite
 }
 
 func strPtrToSQLNullStr(strPtr *string) (sql.NullString, error) {
-    if strPtr == nil {
-        return sql.NullString{}, nil
-    }
+	if strPtr == nil {
+		return sql.NullString{}, nil
+	}
 
 	nullStr := sql.NullString{}
 	err := nullStr.Scan(*strPtr)
@@ -67,11 +66,11 @@ func strPtrToSQLNullStr(strPtr *string) (sql.NullString, error) {
 }
 
 func strPtrToSQLNullTime(strPtr *string) (sql.NullTime, error) {
-    if strPtr == nil {
-        return sql.NullTime{}, nil
-    }
+	if strPtr == nil {
+		return sql.NullTime{}, nil
+	}
 
-    parsedTime, err := time.Parse(time.RFC1123Z, *strPtr)
+	parsedTime, err := time.Parse(time.RFC1123Z, *strPtr)
 	if err != nil {
 		err = fmt.Errorf("time.Parse(time.RFC1123Z, *strPtr): %v", err)
 		return sql.NullTime{}, err

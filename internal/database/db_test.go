@@ -1,11 +1,11 @@
 package database
 
 import (
-    //"context"
+	//"context"
 	//"database/sql"
 	"log"
 	"os"
-    "testing"
+	"testing"
 	//"time"
 
 	//"github.com/google/uuid"
@@ -18,11 +18,11 @@ func TestDB(t *testing.T) {
 		log.Fatal(`Error: database_test.go: godotenv.Load(): cannot load ".env" file`)
 	}
 	dbURL := os.Getenv("CONN")
-    dbQueries, db := InitDB(dbURL)
-    defer db.Close()
+	dbQueries, db := InitDB(dbURL)
+	defer db.Close()
 
-    dbQueries.TestCreateUser(t)
-    dbQueries.TestGetUserByAPIKey(t)
+	dbQueries.TestCreateUser(t)
+	dbQueries.TestGetUserByAPIKey(t)
 
-    dbQueries.TestCreateFeed(t)
+	dbQueries.TestCreateFeed(t)
 }

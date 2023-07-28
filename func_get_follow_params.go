@@ -1,13 +1,13 @@
 package main
 
 import (
-    "encoding/json"
+	"encoding/json"
 	"fmt"
-    "io"
+	"io"
 )
 
 type FollowParams struct {
-    FeedID string `json:"feed_id"`
+	FeedID string `json:"feed_id"`
 }
 
 func getFollowParams(readCloser io.ReadCloser) (FollowParams, error) {
@@ -16,9 +16,9 @@ func getFollowParams(readCloser io.ReadCloser) (FollowParams, error) {
 
 	err := decoder.Decode(&followParams)
 	if err != nil {
-		fmt.Errorf("unable to decode request body and get feedFollow parameters: %v", err)
-        return FollowParams{}, err
+		err = fmt.Errorf("unable to decode request body and get feedFollow parameters: %v", err)
+		return FollowParams{}, err
 	}
 
-    return followParams, nil
+	return followParams, nil
 }

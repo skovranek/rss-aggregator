@@ -20,13 +20,13 @@ func (cfg *apiConfig) handlerPostsGet(w http.ResponseWriter, r *http.Request, us
 			respondWithError(w, http.StatusInternalServerError, "Unable to get limit query parameter")
 			return
 		}
-        if limitInt < 1 {
-            limitInt = 1
-        }
-        if limitInt > 25 {
-            limitInt = 25
-        }
-		limit = int32(limitInt)
+		if limitInt < 1 {
+			limitInt = 1
+		}
+		if limitInt > 25 {
+			limitInt = 25
+		}
+		limit = int32(limitInt) //#nosec G109
 	}
 
 	ctx := context.Background()

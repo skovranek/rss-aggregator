@@ -24,10 +24,10 @@ func main() {
 		log.Fatal(`Error: main.go: godotenv.Load(): cannot load ".env" file`)
 	}
 
-    port := os.Getenv("PORT")
+	port := os.Getenv("PORT")
 
 	dbURL := os.Getenv("CONN")
-    dbQueries, db := database.InitDB(dbURL)
+	dbQueries, db := database.InitDB(dbURL)
 	defer db.Close()
 
 	cfg := apiConfig{

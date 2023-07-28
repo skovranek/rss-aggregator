@@ -29,10 +29,10 @@ func TestDBPostToPost(t *testing.T) {
 		input  database.Post
 		expect Post
 	}{
-        {
-            input: database.Post{},
-            expect: Post{},
-        },
+		{
+			input:  database.Post{},
+			expect: Post{},
+		},
 		{
 			input: database.Post{
 				ID:          id,

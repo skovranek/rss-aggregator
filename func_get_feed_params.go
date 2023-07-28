@@ -1,14 +1,14 @@
 package main
 
 import (
-    "encoding/json"
+	"encoding/json"
 	"fmt"
-    "io"
+	"io"
 )
 
 type FeedParams struct {
-    Name string `json:"name"`
-    URL  string `json:"url"`
+	Name string `json:"name"`
+	URL  string `json:"url"`
 }
 
 func getFeedParams(readCloser io.ReadCloser) (FeedParams, error) {
@@ -17,9 +17,9 @@ func getFeedParams(readCloser io.ReadCloser) (FeedParams, error) {
 
 	err := decoder.Decode(&feedParams)
 	if err != nil {
-		fmt.Errorf("unable to decode request body and get feed parameters: %v", err)
-        return FeedParams{}, err
+        err = fmt.Errorf("unable to decode request body and get feed parameters: %v", err)
+		return FeedParams{}, err
 	}
 
-    return feedParams, nil
+	return feedParams, nil
 }

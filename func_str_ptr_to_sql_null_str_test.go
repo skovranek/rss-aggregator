@@ -8,25 +8,25 @@ import (
 
 func TestStrPtrToSQLNullStr(t *testing.T) {
 	testStr := "this is a string"
-    var nilPtr *string
+	var nilPtr *string
 
 	tests := []struct {
 		input  *string
 		expect sql.NullString
 	}{
-        {
-            input: nilPtr,
-            expect: sql.NullString{
-                String: "",
-                Valid: false,
-            },
-        },
+		{
+			input: nilPtr,
+			expect: sql.NullString{
+				String: "",
+				Valid:  false,
+			},
+		},
 		{
 			input: &testStr,
-            expect: sql.NullString{
-                String: testStr,
-                Valid: true,
-            },
+			expect: sql.NullString{
+				String: testStr,
+				Valid:  true,
+			},
 		},
 	}
 

@@ -43,9 +43,9 @@ func TestDBFeedToFeed(t *testing.T) {
 			},
 		},
 		{
-			input: database.Feed{},
+			input:  database.Feed{},
 			expect: Feed{},
-        },
+		},
 	}
 
 	for i, test := range tests {

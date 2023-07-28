@@ -1,53 +1,53 @@
 package main
 
 import (
-    "encoding/json"
+	"encoding/json"
 	"fmt"
-    "io"
-    "strings"
-    "testing"
+	"io"
+	"strings"
+	"testing"
 )
 
-type TestUserParams struct{
-    Name string `json:"name"`
+type TestUserParams struct {
+	Name string `json:"name"`
 }
 
 func TestGetUserParams(t *testing.T) {
 	exampleStr := "this is a string"
 
 	tests := []struct {
-        input TestUserParams
+		input  TestUserParams
 		expect UserParams
 	}{
-        {}, // zero values
+		{}, // zero values
 		{
 			input: TestUserParams{
-                Name: exampleStr,
-            },
+				Name: exampleStr,
+			},
 			expect: UserParams{
-                Name: exampleStr,
-            },
-        },
+				Name: exampleStr,
+			},
+		},
 	}
 
 	for i, test := range tests {
 		t.Run(fmt.Sprintf("Test Case #%v:", i), func(t *testing.T) {
-            b, err := json.Marshal(test.input)
-            if err != nil {
-                t.Errorf("Error: Test Case #%v: %v", i, err)
-                return
-            }
+			b, err := json.Marshal(test.input)
+			if err != nil {
+				t.Errorf("Error: Test Case #%v: %v", i, err)
+				return
+			}
 
-            reader := strings.NewReader(string(b))
-            readCloser := io.NopCloser(reader)
+			reader := strings.NewReader(string(b))
+			readCloser := io.NopCloser(reader)
 
 			output, err := getUserParams(readCloser)
-            if err != nil {
-                t.Errorf("Error: Test Case #%v: %v", i, err)
-                return
-            }
+			if err != nil {
+				t.Errorf("Error: Test Case #%v: %v", i, err)
+				return
+			}
 
-            if output != test.expect {
+			if output != test.expect {
 				t.Errorf("Unexpected:\n%v", output)
 				return
 			}

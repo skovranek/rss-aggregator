@@ -1,13 +1,13 @@
 package main
 
 import (
-    "encoding/json"
+	"encoding/json"
 	"fmt"
-    "io"
+	"io"
 )
 
 type UserParams struct {
-    Name string `json:"name"`
+	Name string `json:"name"`
 }
 
 func getUserParams(readCloser io.ReadCloser) (UserParams, error) {
@@ -16,9 +16,9 @@ func getUserParams(readCloser io.ReadCloser) (UserParams, error) {
 
 	err := decoder.Decode(&userParams)
 	if err != nil {
-		fmt.Errorf("unable to decode request body and get user parameters: %v", err)
-        return UserParams{}, err
+		err = fmt.Errorf("unable to decode request body and get user parameters: %v", err)
+		return UserParams{}, err
 	}
 
-    return userParams, nil
+	return userParams, nil
 }
