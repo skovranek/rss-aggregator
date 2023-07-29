@@ -25,4 +25,6 @@ func TestDB(t *testing.T) {
 	dbQueries.TestGetUserByAPIKey(t)
 
 	dbQueries.TestCreateFeed(t)
+	dbQueries.TestGetAllFeeds(t)
+	dbQueries.TestMarkFeedFetched(t)
 }

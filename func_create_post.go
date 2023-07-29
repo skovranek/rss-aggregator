@@ -4,15 +4,12 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/google/uuid"
 	_ "github.com/lib/pq"
 	"github.com/skovranek/rss_aggregator/internal/database"
 )
-
-const DUPLICATE_URL_KEY_ERR_MSG = `pq: duplicate key value violates unique constraint "posts_url_key"`
 
 func (cfg *apiConfig) createPost(ctx context.Context, feedID uuid.UUID, item Item) error {
 	id := uuid.New()
@@ -35,7 +32,7 @@ func (cfg *apiConfig) createPost(ctx context.Context, feedID uuid.UUID, item Ite
 
 	_, err = cfg.DB.CreatePost(ctx, database.CreatePostParams{
 		ID:          id,
-		CreatedAt:   now,
+	CreatedAt:   now,
 		UpdatedAt:   now,
 		Title:       titleNullStr,
 		Url:         item.Link,
@@ -43,7 +40,7 @@ func (cfg *apiConfig) createPost(ctx context.Context, feedID uuid.UUID, item Ite
 		PublishedAt: publishedAtNullTime,
 		FeedID:      feedID,
 	})
-	if err != nil && !strings.Contains(err.Error(), DUPLICATE_URL_KEY_ERR_MSG) {
+    if err != nil {
 		err = fmt.Errorf("unable to add post to database: %v", err)
 		return err
 	}
