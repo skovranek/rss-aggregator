@@ -35,7 +35,7 @@ func main() {
 		Limit: int32(10),
 	}
 
-	go cfg.workerScrapeFeeds(time.Minute)
+	go cfg.scrapeFeeds(time.Minute)
 
 	r := chi.NewRouter()
 	r.Use(cors.Handler(cors.Options{

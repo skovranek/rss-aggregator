@@ -13,8 +13,7 @@ func (q *Queries) TestGetNextFeedsToFetch(t *testing.T) {
 	ctx := context.Background()
 
 	tests := []struct {
-		input     int32
-		expect    int
+		input     int
 		expectErr string
 	}{
 		{
@@ -22,25 +21,22 @@ func (q *Queries) TestGetNextFeedsToFetch(t *testing.T) {
 			expectErr: "sql: no rows in result set",
 		},
 		{
-			input:     int32(1),
-			expect:    1,
+			input:     1,
 			expectErr: "not expecting an error",
 		},
 		{
-			input:     int32(5),
-			expect:    5,
+			input:     5,
 			expectErr: "not expecting an error",
 		},
 		{
-			input:     int32(10),
-			expect:    10,
+			input:     10,
 			expectErr: "not expecting an error",
 		},
 	}
 
 	for i, test := range tests {
 		t.Run(fmt.Sprintf("TestGetFeedByAPIKey Case #%v:", i), func(t *testing.T) {
-			output, err := q.GetNextFeedsToFetch(ctx, test.input)
+			output, err := q.GetNextFeedsToFetch(ctx, int32(test.input))
 			if err != nil {
 				if strings.Contains(err.Error(), test.expectErr) {
 					return
@@ -49,7 +45,7 @@ func (q *Queries) TestGetNextFeedsToFetch(t *testing.T) {
 				return
 			}
 
-			if len(output) != test.expect {
+			if len(output) != test.input {
 				t.Errorf("Unexpected:\n%v", output)
 				return
 			}

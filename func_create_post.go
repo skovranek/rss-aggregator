@@ -32,7 +32,7 @@ func (cfg *apiConfig) createPost(ctx context.Context, feedID uuid.UUID, item Ite
 
 	_, err = cfg.DB.CreatePost(ctx, database.CreatePostParams{
 		ID:          id,
-	CreatedAt:   now,
+		CreatedAt:   now,
 		UpdatedAt:   now,
 		Title:       titleNullStr,
 		Url:         item.Link,
@@ -40,7 +40,7 @@ func (cfg *apiConfig) createPost(ctx context.Context, feedID uuid.UUID, item Ite
 		PublishedAt: publishedAtNullTime,
 		FeedID:      feedID,
 	})
-    if err != nil {
+	if err != nil {
 		err = fmt.Errorf("unable to add post to database: %v", err)
 		return err
 	}
