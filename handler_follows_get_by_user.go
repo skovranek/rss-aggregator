@@ -8,7 +8,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func (cfg *apiConfig) handlerFollowsGet(w http.ResponseWriter, r *http.Request, user User) {
+func (cfg *apiConfig) handlerFollowsGetByUser(w http.ResponseWriter, r *http.Request, user User) {
 	ctx := context.Background()
 
 	follows, err := cfg.DB.GetFollows(ctx, user.ID)

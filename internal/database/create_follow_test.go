@@ -25,7 +25,7 @@ func (q *Queries) TestCreateFollow(t *testing.T) {
 		expectErr string
 	}{
 		{ // zero values
-			expectErr: `pq: insert or update on table "feeds" violates foreign key constraint "feeds_user_id_fkey`,
+			expectErr: `pq: insert or update on table "feed_follows" violates foreign key constraint "feed_follows_feed_id_fkey"`,
 		},
 		{ // zero values, except keys
 			input: CreateFollowParams{

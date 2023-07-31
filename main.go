@@ -61,7 +61,7 @@ func main() {
 
 	v1router.Post("/feed_follows", cfg.middlewareAuth(cfg.handlerFollowsCreate))
 	v1router.Delete("/feed_follows/{feedFollowID}", cfg.handlerFollowsDelete)
-	v1router.Get("/feed_follows", cfg.middlewareAuth(cfg.handlerFollowsGet))
+	v1router.Get("/feed_follows", cfg.middlewareAuth(cfg.handlerFollowsGetByUser))
 
 	v1router.Get("/posts", cfg.middlewareAuth(cfg.handlerPostsGet))
 

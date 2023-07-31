@@ -27,4 +27,7 @@ func TestDB(t *testing.T) {
 	dbQueries.TestCreateFeed(t)
 	dbQueries.TestGetAllFeeds(t)
 	dbQueries.TestMarkFeedFetched(t)
+
+	dbQueries.TestCreateFollow(t)
+	dbQueries.TestDeleteFollow(t)
 }
