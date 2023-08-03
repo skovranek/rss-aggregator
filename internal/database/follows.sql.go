@@ -55,13 +55,13 @@ func (q *Queries) DeleteFollow(ctx context.Context, id uuid.UUID) error {
 	return err
 }
 
-const getFollows = `-- name: GetFollows :many
+const getFollowsByUser = `-- name: GetFollowsByUser :many
 SELECT id, feed_id, user_id, created_at, updated_at FROM feed_follows
 WHERE user_id = $1
 `
 
-func (q *Queries) GetFollows(ctx context.Context, userID uuid.UUID) ([]FeedFollow, error) {
-	rows, err := q.db.QueryContext(ctx, getFollows, userID)
+func (q *Queries) GetFollowsByUser(ctx context.Context, userID uuid.UUID) ([]FeedFollow, error) {
+	rows, err := q.db.QueryContext(ctx, getFollowsByUser, userID)
 	if err != nil {
 		return nil, err
 	}

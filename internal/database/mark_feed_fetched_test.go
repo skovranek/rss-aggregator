@@ -17,7 +17,7 @@ WHERE id = $1
 
 func (q *Queries) TestMarkFeedFetched(t *testing.T) {
 	ctx := context.Background()
-	id := uuid.MustParse("0fb2ba16-de86-465a-9a01-5d640fef4d6f")
+	id := uuid.MustParse("4ee81dd1-dd4f-4536-b362-b5cd596e9cc8")
 
 	tests := []struct {
 		input     uuid.UUID

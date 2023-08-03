@@ -31,11 +31,17 @@ func (cfg *apiConfig) scrapeFeeds(interval time.Duration) {
 			go func(feed Feed) {
 				defer wg.Done()
 
+				defer func() {
+					if err := recover(); err != nil {
+						log.Printf("Panic occurred: %s - %v", feed.Url, err)
+					}
+				}()
+
 				log.Printf("Scraping: %s", feed.Url)
 
 				data, err := fetchRSSDataFromURL(feed.Url)
 				if err != nil {
-					log.Printf("Error: cfg.scrapeFeeds: fetchRSSDataFromURL %v", err)
+					log.Printf("Error: cfg.scrapeFeeds: fetchRSSDataFromURL(%s) %v", feed.Url, err)
 				}
 
 				ctx := context.Background()

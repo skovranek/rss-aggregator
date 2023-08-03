@@ -9,6 +9,7 @@ CREATE TABLE posts (
     published_at TIMESTAMP,
     feed_id UUID NOT NULL,
     FOREIGN KEY (feed_id) REFERENCES feeds(id)
+    ON DELETE CASCADE
 );
 
 -- +goose Down

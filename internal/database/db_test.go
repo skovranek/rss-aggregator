@@ -1,14 +1,10 @@
 package database
 
 import (
-	//"context"
-	//"database/sql"
 	"log"
 	"os"
 	"testing"
-	//"time"
 
-	//"github.com/google/uuid"
 	"github.com/joho/godotenv"
 )
 
@@ -30,4 +26,8 @@ func TestDB(t *testing.T) {
 
 	dbQueries.TestCreateFollow(t)
 	dbQueries.TestDeleteFollow(t)
+	dbQueries.TestGetFollowsByUser(t)
+
+	dbQueries.TestCreatePost(t)
+	dbQueries.TestGetPostsByUser(t)
 }

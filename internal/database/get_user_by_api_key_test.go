@@ -14,11 +14,15 @@ import (
 func (q *Queries) TestGetUserByAPIKey(t *testing.T) {
 	ctx := context.Background()
 	id := uuid.MustParse("4fb16356-e009-411c-a2b9-58f358b91e0d")
-	timestamp, err := time.Parse(time.RFC3339Nano, "2023-07-11T20:15:24.897281Z")
+	createdAt, err := time.Parse(time.RFC3339Nano, "2023-07-11T20:15:24.897281Z")
 	if err != nil {
 		t.Errorf("Error: %v", err)
 	}
-	name := "james"
+	updatedAt, err := time.Parse(time.RFC3339Nano, "2023-08-02T00:06:14.814822Z")
+	if err != nil {
+		t.Errorf("Error: %v", err)
+	}
+	name := "this is a string"
 	apiKey := "55a49e10add391404027e65a20156727abedbbcfaafe9316d828c36b4a24a158"
 
 	tests := []struct {
@@ -38,8 +42,8 @@ func (q *Queries) TestGetUserByAPIKey(t *testing.T) {
 			input: apiKey,
 			expect: User{
 				ID:        id,
-				CreatedAt: timestamp,
-				UpdatedAt: timestamp,
+				CreatedAt: createdAt,
+				UpdatedAt: updatedAt,
 				Name:      name,
 				ApiKey:    apiKey,
 			},

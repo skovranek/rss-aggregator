@@ -22,26 +22,25 @@ func (q *Queries) TestDeleteFollow(t *testing.T) {
 	id2 := uuid.New()
 	now := time.Now().UTC()
 	userID := uuid.MustParse("4fb16356-e009-411c-a2b9-58f358b91e0d")
-	feedID := uuid.MustParse("0fb2ba16-de86-465a-9a01-5d640fef4d6f")
+	feedID := uuid.MustParse("4ee81dd1-dd4f-4536-b362-b5cd596e9cc8")
 
 	tests := []struct {
-		createNewFeed bool
-		input         CreateFollowParams
-		expectErr     string
+		input     CreateFollowParams
+		expect    int
+		expectErr string
 	}{
 		{
 			// zero values
-			createNewFeed: false,
-			expectErr:     `pq: insert or update on table "feeds" violates foreign key constraint "feeds_user_id_fkey`,
+			expectErr: `pq: insert or update on table "feed_follows" violates foreign key constraint "feed_follows_feed_id_fkey"`,
 		},
 		{
 			// zero values, except keys
-			createNewFeed: true,
 			input: CreateFollowParams{
 				ID:     id1,
 				UserID: userID,
 				FeedID: feedID,
 			},
+			expect:    1,
 			expectErr: "not expecting an error",
 		},
 		{
@@ -52,26 +51,57 @@ func (q *Queries) TestDeleteFollow(t *testing.T) {
 				CreatedAt: now,
 				UpdatedAt: now,
 			},
+			expect:    1,
 			expectErr: "not expecting an error",
 		},
 	}
 
 	for i, test := range tests {
 		t.Run(fmt.Sprintf("TestDeleteFollow Case #%v:", i), func(t *testing.T) {
-			if test.createNewFeed {
-				_, err := q.CreateFollow(ctx, test.input)
-				if err != nil {
+			_, err := q.CreateFollow(ctx, test.input)
+			if err != nil {
+				if !strings.Contains(err.Error(), test.expectErr) {
 					t.Errorf("Error: %v\n", err)
 					return
 				}
 			}
 
-			err := q.DeleteFollow(ctx, test.input.ID)
+			resultBeforeDelete, err := q.db.ExecContext(ctx, GET_FOLLOW, test.input.ID)
+			if err != nil {
+				t.Errorf("Error: Did not delete feedFollow during test: %v", err)
+				return
+			}
+			rowsNumBefore, err := resultBeforeDelete.RowsAffected()
+			if err != nil {
+				t.Errorf("Error: Unable to get number of rows affected: %v", err)
+				return
+			}
+			if rowsNumBefore != int64(test.expect) {
+				t.Errorf("Unexpected: follow not deleted: %v", rowsNumBefore)
+				return
+			}
+
+			err = q.DeleteFollow(ctx, test.input.ID)
 			if err != nil {
 				if strings.Contains(err.Error(), test.expectErr) {
 					return
 				}
 				t.Errorf("Error: %v\n", err)
+				return
+			}
+
+			resultAfterDelete, err := q.db.ExecContext(ctx, GET_FOLLOW, test.input.ID)
+			if err != nil {
+				t.Errorf("Error: unable to get feedFollow from DB: %v", err)
+				return
+			}
+			rowsNumAfter, err := resultAfterDelete.RowsAffected()
+			if err != nil {
+				t.Errorf("Error: Unable to get number of rows affected: %v", err)
+				return
+			}
+			if rowsNumAfter != 0 {
+				t.Errorf("Unexpected: follow not deleted: %v", rowsNumAfter)
 				return
 			}
 		})

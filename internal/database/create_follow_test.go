@@ -17,7 +17,7 @@ func (q *Queries) TestCreateFollow(t *testing.T) {
 	id2 := uuid.New()
 	now := time.Now().UTC()
 	userID := uuid.MustParse("4fb16356-e009-411c-a2b9-58f358b91e0d")
-	feedID := uuid.MustParse("0fb2ba16-de86-465a-9a01-5d640fef4d6f")
+	feedID := uuid.MustParse("4ee81dd1-dd4f-4536-b362-b5cd596e9cc8")
 
 	tests := []struct {
 		input     CreateFollowParams
@@ -72,7 +72,7 @@ func (q *Queries) TestCreateFollow(t *testing.T) {
 				defer func() {
 					_, err := q.db.ExecContext(ctx, deleteFollow, output.ID)
 					if err != nil {
-						t.Errorf("Error: Unable to delete rows from test%v", err)
+						t.Errorf("Error: Unable to delete rows from test: %v", err)
 						return
 					}
 				}()
