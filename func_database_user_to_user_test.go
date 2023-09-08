@@ -44,7 +44,7 @@ func TestDBUserToUser(t *testing.T) {
 		t.Run(fmt.Sprintf("TestDBUserToUser Case #%v:", i), func(t *testing.T) {
 			output := databaseUserToUser(test.input)
 			if output != test.expect {
-                t.Errorf("Unexpected: TestDBUserToUser:\n%v", output)
+				t.Errorf("Unexpected: TestDBUserToUser:\n%v", output)
 				return
 			}
 		})

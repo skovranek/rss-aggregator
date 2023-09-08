@@ -34,7 +34,7 @@ func TestGetFollowParams(t *testing.T) {
 		t.Run(fmt.Sprintf("TestGetFollowParams Case #%v:", i), func(t *testing.T) {
 			b, err := json.Marshal(test.input)
 			if err != nil {
-                t.Errorf("Error: TestGetFollowParams: Case #%v: %v", i, err)
+				t.Errorf("Error: TestGetFollowParams: Case #%v: %v", i, err)
 				return
 			}
 
@@ -43,12 +43,12 @@ func TestGetFollowParams(t *testing.T) {
 
 			output, err := getFollowParams(readCloser)
 			if err != nil {
-                t.Errorf("Error: TestGetFollowParams: Case #%v: %v", i, err)
+				t.Errorf("Error: TestGetFollowParams: Case #%v: %v", i, err)
 				return
 			}
 
 			if output != test.expect {
-                t.Errorf("Unexpected: TestGetFollowParams:\n%v", output)
+				t.Errorf("Unexpected: TestGetFollowParams:\n%v", output)
 				return
 			}
 		})

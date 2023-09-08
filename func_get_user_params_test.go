@@ -31,10 +31,10 @@ func TestGetUserParams(t *testing.T) {
 	}
 
 	for i, test := range tests {
-        t.Run(fmt.Sprintf("TestGetUserParams Case #%v:", i), func(t *testing.T) {
+		t.Run(fmt.Sprintf("TestGetUserParams Case #%v:", i), func(t *testing.T) {
 			b, err := json.Marshal(test.input)
 			if err != nil {
-                t.Errorf("Error: TestGetUserParams Case #%v: %v", i, err)
+				t.Errorf("Error: TestGetUserParams Case #%v: %v", i, err)
 				return
 			}
 
@@ -48,7 +48,7 @@ func TestGetUserParams(t *testing.T) {
 			}
 
 			if output != test.expect {
-                t.Errorf("Unexpected: TestGetUserParams:\n%v", output)
+				t.Errorf("Unexpected: TestGetUserParams:\n%v", output)
 				return
 			}
 		})

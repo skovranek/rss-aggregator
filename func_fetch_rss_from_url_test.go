@@ -18,7 +18,7 @@ func TestFetchRSSDataFromURL(t *testing.T) {
 		//	expectErr: "unsupported protocol scheme",
 		//},
 		//{
-        //    input:     "https://google.com",
+		//    input:     "https://google.com",
 		//	expectErr: "invalid",
 		//},
 		{
@@ -31,7 +31,7 @@ func TestFetchRSSDataFromURL(t *testing.T) {
 		{
 			input:      "https://blog.boot.dev/index.xml",
 			expectURL:  "https://blog.boot.dev/index.xml",
-            expectLink: "https://blog.boot.dev/cryptography/node-js-random-number/",
+			expectLink: "https://blog.boot.dev/cryptography/node-js-random-number/",
 			expectErr:  "not expecting an error",
 		},
 	}
@@ -40,18 +40,18 @@ func TestFetchRSSDataFromURL(t *testing.T) {
 		t.Run(fmt.Sprintf("TestFetchRSSDataFromURLTest Case #%v:", i), func(t *testing.T) {
 			output, err := fetchRSSFromURL(test.input)
 			if err != nil && !strings.Contains(err.Error(), test.expectErr) {
-                t.Errorf("Unexpected: TestFetchRSSDataFromURL: %v", err)
+				t.Errorf("Unexpected: TestFetchRSSDataFromURL: %v", err)
 				return
 			}
 
 			if output.URL != test.expectURL {
-                t.Errorf("Unexpected: TestFetchRSSDataFromURL: %v", output.URL)
+				t.Errorf("Unexpected: TestFetchRSSDataFromURL: %v", output.URL)
 				return
 			}
 
-            itemsLen := len(output.Channel.Items)
+			itemsLen := len(output.Channel.Items)
 			if itemsLen > 0 && output.Channel.Items[itemsLen-1].Link != test.expectLink {
-                t.Errorf("Unexpected: TestFetchRSSDataFromURL: %v", output.Channel.Items[itemsLen-1].Link)
+				t.Errorf("Unexpected: TestFetchRSSDataFromURL: %v", output.Channel.Items[itemsLen-1].Link)
 				return
 			}
 		})

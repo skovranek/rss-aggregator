@@ -58,7 +58,7 @@ func TestDBPostToPost(t *testing.T) {
 		t.Run(fmt.Sprintf("TestDBPostToPost Case #%v:", i), func(t *testing.T) {
 			output := databasePostToPost(test.input)
 			if output != test.expect {
-                t.Errorf("Unexpected: TestDBPostToPost: \n%v", output)
+				t.Errorf("Unexpected: TestDBPostToPost: \n%v", output)
 				return
 			}
 		})

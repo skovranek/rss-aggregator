@@ -45,7 +45,7 @@ func TestGetAPIKey(t *testing.T) {
 	}
 
 	for i, test := range tests {
-        t.Run(fmt.Sprintf("TestGetAPIKey Case #%v:", i), func(t *testing.T) {
+		t.Run(fmt.Sprintf("TestGetAPIKey Case #%v:", i), func(t *testing.T) {
 			header := http.Header{}
 			header.Add(test.key, test.value)
 
@@ -54,12 +54,12 @@ func TestGetAPIKey(t *testing.T) {
 				if strings.Contains(err.Error(), test.expectErr) {
 					return
 				}
-                t.Errorf("Unexpected: TestGetAPIKey:%v\n", err)
+				t.Errorf("Unexpected: TestGetAPIKey:%v\n", err)
 				return
 			}
 
 			if output != test.expect {
-                t.Errorf("Unexpected: TestGetAPIKey:%s", output)
+				t.Errorf("Unexpected: TestGetAPIKey:%s", output)
 				return
 			}
 		})

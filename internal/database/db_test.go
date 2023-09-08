@@ -22,13 +22,13 @@ func TestDB(t *testing.T) {
 	dbQueries, db := InitDB(dbURL)
 	defer db.Close()
 
-    t.Run("TestDB", func(t *testing.T) {
-        _, err := dbQueries.db.ExecContext(context.Background(), CHECK_DB_CONNECTION)
-        if err != nil {
-            t.Errorf("Error: TestDB: q.ExecContext: Unable to verify connection to DB: %v", err)
-            return
-        }
-    })
+	t.Run("TestDB", func(t *testing.T) {
+		_, err := dbQueries.db.ExecContext(context.Background(), CHECK_DB_CONNECTION)
+		if err != nil {
+			t.Errorf("Error: TestDB: q.ExecContext: Unable to verify connection to DB: %v", err)
+			return
+		}
+	})
 
 	dbQueries.TestCreateUser(t)
 	dbQueries.TestGetUserByAPIKey(t)

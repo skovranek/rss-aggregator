@@ -67,7 +67,7 @@ func TestGetFeedParams(t *testing.T) {
 			}
 
 			if output != test.expect {
-                t.Errorf("Unexpected: TestGetFeedParams: \n%v", output)
+				t.Errorf("Unexpected: TestGetFeedParams: \n%v", output)
 				return
 			}
 		})

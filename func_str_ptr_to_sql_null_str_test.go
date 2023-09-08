@@ -34,7 +34,7 @@ func TestStrPtrToSQLNullStr(t *testing.T) {
 		t.Run(fmt.Sprintf("TestStrPtrToSQLNullStr Case #%v:", i), func(t *testing.T) {
 			output, _ := strPtrToSQLNullStr(test.input)
 			if output != test.expect {
-                t.Errorf("Unexpected: TestStrPtrToSQLNullStr:\n%v", output)
+				t.Errorf("Unexpected: TestStrPtrToSQLNullStr:\n%v", output)
 				return
 			}
 		})
