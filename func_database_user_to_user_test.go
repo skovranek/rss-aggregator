@@ -11,8 +11,8 @@ import (
 
 func TestDBUserToUser(t *testing.T) {
 	id := uuid.New()
-	timeNow := time.Now()
-	testStr := "test case"
+	now := time.Now().UTC()
+	str := "this is a string"
 
 	tests := []struct {
 		input  database.User
@@ -25,26 +25,26 @@ func TestDBUserToUser(t *testing.T) {
 		{
 			input: database.User{
 				ID:        id,
-				CreatedAt: timeNow,
-				UpdatedAt: timeNow,
-				Name:      testStr,
-				ApiKey:    testStr,
+				CreatedAt: now,
+				UpdatedAt: now,
+				Name:      str,
+				ApiKey:    str,
 			},
 			expect: User{
 				ID:        id,
-				CreatedAt: timeNow,
-				UpdatedAt: timeNow,
-				Name:      testStr,
-				ApiKey:    testStr,
+				CreatedAt: now,
+				UpdatedAt: now,
+				Name:      str,
+				ApiKey:    str,
 			},
 		},
 	}
 
 	for i, test := range tests {
-		t.Run(fmt.Sprintf("Test Case #%v:", i), func(t *testing.T) {
+		t.Run(fmt.Sprintf("TestDBUserToUser Case #%v:", i), func(t *testing.T) {
 			output := databaseUserToUser(test.input)
 			if output != test.expect {
-				t.Errorf("Unexpected:\n%v", output)
+                t.Errorf("Unexpected: TestDBUserToUser:\n%v", output)
 				return
 			}
 		})

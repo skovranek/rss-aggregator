@@ -70,7 +70,7 @@ func (q *Queries) TestCreateFeed(t *testing.T) {
 	}
 
 	for i, test := range tests {
-		t.Run(fmt.Sprintf("TestCreateFeed Case #%v:", i), func(t *testing.T) {
+        t.Run(fmt.Sprintf("TestCreateFeed case #%v:", i), func(t *testing.T) {
 			output, err := q.CreateFeed(ctx, test.input)
 			if err != nil {
 				if strings.Contains(err.Error(), test.expectErr) {

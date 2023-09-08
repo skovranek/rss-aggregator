@@ -22,7 +22,7 @@ func (cfg *apiConfig) handlerFeedsCreate(w http.ResponseWriter, r *http.Request,
 	name := feedParams.Name
 	url := feedParams.URL
 	id := uuid.New()
-	now := time.Now()
+	now := time.Now().UTC()
 	userID := user.ID
 	ctx := context.Background()
 

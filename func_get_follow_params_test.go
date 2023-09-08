@@ -13,7 +13,7 @@ type TestFollowParams struct {
 }
 
 func TestGetFollowParams(t *testing.T) {
-	exampleStr := "this is a string"
+	str := "this is a string"
 
 	tests := []struct {
 		input  TestFollowParams
@@ -22,19 +22,19 @@ func TestGetFollowParams(t *testing.T) {
 		{}, // zero values
 		{
 			input: TestFollowParams{
-				FeedID: exampleStr,
+				FeedID: str,
 			},
 			expect: FollowParams{
-				FeedID: exampleStr,
+				FeedID: str,
 			},
 		},
 	}
 
 	for i, test := range tests {
-		t.Run(fmt.Sprintf("Test Case #%v:", i), func(t *testing.T) {
+		t.Run(fmt.Sprintf("TestGetFollowParams Case #%v:", i), func(t *testing.T) {
 			b, err := json.Marshal(test.input)
 			if err != nil {
-				t.Errorf("Error: Test Case #%v: %v", i, err)
+                t.Errorf("Error: TestGetFollowParams: Case #%v: %v", i, err)
 				return
 			}
 
@@ -43,12 +43,12 @@ func TestGetFollowParams(t *testing.T) {
 
 			output, err := getFollowParams(readCloser)
 			if err != nil {
-				t.Errorf("Error: Test Case #%v: %v", i, err)
+                t.Errorf("Error: TestGetFollowParams: Case #%v: %v", i, err)
 				return
 			}
 
 			if output != test.expect {
-				t.Errorf("Unexpected:\n%v", output)
+                t.Errorf("Unexpected: TestGetFollowParams:\n%v", output)
 				return
 			}
 		})

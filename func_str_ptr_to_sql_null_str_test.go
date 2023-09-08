@@ -7,7 +7,7 @@ import (
 )
 
 func TestStrPtrToSQLNullStr(t *testing.T) {
-	testStr := "this is a string"
+	str := "this is a string"
 	var nilPtr *string
 
 	tests := []struct {
@@ -22,19 +22,19 @@ func TestStrPtrToSQLNullStr(t *testing.T) {
 			},
 		},
 		{
-			input: &testStr,
+			input: &str,
 			expect: sql.NullString{
-				String: testStr,
+				String: str,
 				Valid:  true,
 			},
 		},
 	}
 
 	for i, test := range tests {
-		t.Run(fmt.Sprintf("Test Case #%v:", i), func(t *testing.T) {
+		t.Run(fmt.Sprintf("TestStrPtrToSQLNullStr Case #%v:", i), func(t *testing.T) {
 			output, _ := strPtrToSQLNullStr(test.input)
 			if output != test.expect {
-				t.Errorf("Unexpected:\n%v", output)
+                t.Errorf("Unexpected: TestStrPtrToSQLNullStr:\n%v", output)
 				return
 			}
 		})

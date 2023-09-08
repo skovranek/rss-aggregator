@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-type RSSData struct {
+type RSS struct {
 	URL     string `xml:"url"`
 	Channel struct {
 		Title         *string `xml:"title"`
@@ -24,30 +24,30 @@ type Item struct {
 	Description *string `xml:"description"`
 }
 
-func fetchRSSDataFromURL(URL string) (RSSData, error) {
+func fetchRSSFromURL(URL string) (RSS, error) {
 	response, err := http.Get(URL) //#nosec G107
 	if err != nil {
-		return RSSData{}, err
+		return RSS{}, err
 	}
 	defer response.Body.Close()
 
 	body, err := io.ReadAll(response.Body)
 	if response.StatusCode > 299 {
 		err = fmt.Errorf("response failure: status code: %d, body: %s", response.StatusCode, body)
-		return RSSData{}, err
+		return RSS{}, err
 	}
 	if err != nil {
-		return RSSData{}, err
+		return RSS{}, err
 	}
 
-	data := RSSData{}
-	err = xml.Unmarshal(body, &data)
+	rss := RSS{}
+	err = xml.Unmarshal(body, &rss)
 	if err != nil {
-		return RSSData{}, err
+		return RSS{}, err
 	}
-	if data.URL == "" {
-		data.URL = URL
+	if rss.URL == "" {
+		rss.URL = URL
 	}
 
-	return data, nil
+	return rss, nil
 }

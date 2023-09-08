@@ -39,7 +39,7 @@ func (cfg *apiConfig) scrapeFeeds(interval time.Duration) {
 
 				log.Printf("Scraping: %s", feed.Url)
 
-				data, err := fetchRSSDataFromURL(feed.Url)
+				rss, err := fetchRSSFromURL(feed.Url)
 				if err != nil {
 					log.Printf("Error: cfg.scrapeFeeds: fetchRSSDataFromURL(%s) %v", feed.Url, err)
 				}
@@ -50,9 +50,9 @@ func (cfg *apiConfig) scrapeFeeds(interval time.Duration) {
 					log.Printf("Error: cfg.scrapeFeeds: cfg.DB.MarkFeedFetched: %v", err)
 				}
 
-				log.Printf("Posting from: %s - %s", feed.Url, *data.Channel.Title)
+				log.Printf("Posting from: %s - %s", feed.Url, *rss.Channel.Title)
 
-				for _, item := range data.Channel.Items {
+				for _, item := range rss.Channel.Items {
 					err = cfg.createPost(ctx, feed.ID, item)
 					if err != nil {
 						if strings.Contains(err.Error(), ERR_MSG_DUPLICATE_URL_KEY) {
@@ -60,7 +60,7 @@ func (cfg *apiConfig) scrapeFeeds(interval time.Duration) {
 						}
 						log.Printf("Error: cfg.scrapeFeeds: cfg.CreatePost(ctx, item, feed.ID): %v", err)
 					} else {
-						log.Printf("Creating post: %s - %s", *data.Channel.Title, *item.Title)
+						log.Printf("Creating post: %s - %s", *rss.Channel.Title, *item.Title)
 					}
 				}
 			}(feed)

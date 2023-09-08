@@ -14,7 +14,7 @@ type TestFeedParams struct {
 }
 
 func TestGetFeedParams(t *testing.T) {
-	exampleStr := "this is a string"
+	str := "this is a string"
 
 	tests := []struct {
 		input  TestFeedParams
@@ -23,37 +23,37 @@ func TestGetFeedParams(t *testing.T) {
 		{}, // zero values
 		{
 			input: TestFeedParams{
-				Name: exampleStr,
+				Name: str,
 			},
 			expect: FeedParams{
-				Name: exampleStr,
+				Name: str,
 			},
 		},
 		{
 			input: TestFeedParams{
-				URL: exampleStr,
+				URL: str,
 			},
 			expect: FeedParams{
-				URL: exampleStr,
+				URL: str,
 			},
 		},
 		{
 			input: TestFeedParams{
-				Name: exampleStr,
-				URL:  exampleStr,
+				Name: str,
+				URL:  str,
 			},
 			expect: FeedParams{
-				Name: exampleStr,
-				URL:  exampleStr,
+				Name: str,
+				URL:  str,
 			},
 		},
 	}
 
 	for i, test := range tests {
-		t.Run(fmt.Sprintf("Test Case #%v:", i), func(t *testing.T) {
+		t.Run(fmt.Sprintf("TestGetFeedParams Case #%v:", i), func(t *testing.T) {
 			b, err := json.Marshal(test.input)
 			if err != nil {
-				t.Errorf("Error: Test Case #%v: %v", i, err)
+				t.Errorf("Error: TestGetFeedParams Case #%v: %v", i, err)
 				return
 			}
 
@@ -62,12 +62,12 @@ func TestGetFeedParams(t *testing.T) {
 
 			output, err := getFeedParams(readCloser)
 			if err != nil {
-				t.Errorf("Error: Test Case #%v: %v", i, err)
+				t.Errorf("Error: TestGetFeedParams Case #%v: %v", i, err)
 				return
 			}
 
 			if output != test.expect {
-				t.Errorf("Unexpected:\n%v", output)
+                t.Errorf("Unexpected: TestGetFeedParams: \n%v", output)
 				return
 			}
 		})

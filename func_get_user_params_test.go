@@ -13,7 +13,7 @@ type TestUserParams struct {
 }
 
 func TestGetUserParams(t *testing.T) {
-	exampleStr := "this is a string"
+	str := "this is a string"
 
 	tests := []struct {
 		input  TestUserParams
@@ -22,19 +22,19 @@ func TestGetUserParams(t *testing.T) {
 		{}, // zero values
 		{
 			input: TestUserParams{
-				Name: exampleStr,
+				Name: str,
 			},
 			expect: UserParams{
-				Name: exampleStr,
+				Name: str,
 			},
 		},
 	}
 
 	for i, test := range tests {
-		t.Run(fmt.Sprintf("Test Case #%v:", i), func(t *testing.T) {
+        t.Run(fmt.Sprintf("TestGetUserParams Case #%v:", i), func(t *testing.T) {
 			b, err := json.Marshal(test.input)
 			if err != nil {
-				t.Errorf("Error: Test Case #%v: %v", i, err)
+                t.Errorf("Error: TestGetUserParams Case #%v: %v", i, err)
 				return
 			}
 
@@ -43,12 +43,12 @@ func TestGetUserParams(t *testing.T) {
 
 			output, err := getUserParams(readCloser)
 			if err != nil {
-				t.Errorf("Error: Test Case #%v: %v", i, err)
+				t.Errorf("Error: TestGetUserParams Case #%v: %v", i, err)
 				return
 			}
 
 			if output != test.expect {
-				t.Errorf("Unexpected:\n%v", output)
+                t.Errorf("Unexpected: TestGetUserParams:\n%v", output)
 				return
 			}
 		})

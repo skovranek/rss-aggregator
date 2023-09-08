@@ -13,8 +13,8 @@ import (
 func TestDBFeedToFeed(t *testing.T) {
 	id := uuid.New()
 
-	timeStamp := time.Now()
-	testStr := "test case"
+	now := time.Now().UTC()
+	str := "this is a string"
 
 	tests := []struct {
 		input  database.Feed
@@ -23,23 +23,23 @@ func TestDBFeedToFeed(t *testing.T) {
 		{
 			input: database.Feed{
 				ID:        id,
-				CreatedAt: timeStamp,
-				UpdatedAt: timeStamp,
-				Name:      testStr,
-				Url:       testStr,
+				CreatedAt: now,
+				UpdatedAt: now,
+				Name:      str,
+				Url:       str,
 				UserID:    id,
 				LastFetchedAt: sql.NullTime{
-					Time: timeStamp,
+					Time: now,
 				},
 			},
 			expect: Feed{
 				ID:            id,
-				CreatedAt:     timeStamp,
-				UpdatedAt:     timeStamp,
-				Name:          testStr,
-				Url:           testStr,
+				CreatedAt:     now,
+				UpdatedAt:     now,
+				Name:          str,
+				Url:           str,
 				UserID:        id,
-				LastFetchedAt: timeStamp,
+				LastFetchedAt: now,
 			},
 		},
 		{
@@ -49,10 +49,10 @@ func TestDBFeedToFeed(t *testing.T) {
 	}
 
 	for i, test := range tests {
-		t.Run(fmt.Sprintf("Test Case #%v:", i), func(t *testing.T) {
+		t.Run(fmt.Sprintf("TestDBFeedToFeed Case #%v:", i), func(t *testing.T) {
 			output := databaseFeedToFeed(test.input)
 			if output != test.expect {
-				t.Errorf("Unexpected:\n%v\n", output)
+				t.Errorf("TestDBFeedToFeed Unexpected:\n%v\n", output)
 				return
 			}
 		})

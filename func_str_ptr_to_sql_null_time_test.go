@@ -8,7 +8,7 @@ import (
 )
 
 func TestStrPtrToSQLNullTime(t *testing.T) {
-	now := time.Now()
+	now := time.Now().UTC()
 	formattedTimeStr := now.Format(time.RFC1123Z)
 
 	removedMonotonicClockTimeStr := now.Format(time.Layout)

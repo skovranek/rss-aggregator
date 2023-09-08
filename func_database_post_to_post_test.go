@@ -13,15 +13,15 @@ import (
 func TestDBPostToPost(t *testing.T) {
 	id := uuid.New()
 
-	timeNow := time.Now()
-	testSQLNullTime := sql.NullTime{
-		Time:  timeNow,
+	now := time.Now().UTC()
+	nullTimeNow := sql.NullTime{
+		Time:  now,
 		Valid: true,
 	}
 
-	testStr := "test case"
-	testSQLNullStr := sql.NullString{
-		String: testStr,
+	str := "this is a string"
+	nullStr := sql.NullString{
+		String: str,
 		Valid:  true,
 	}
 
@@ -29,39 +29,36 @@ func TestDBPostToPost(t *testing.T) {
 		input  database.Post
 		expect Post
 	}{
-		{
-			input:  database.Post{},
-			expect: Post{},
-		},
+		{}, // test zero values
 		{
 			input: database.Post{
 				ID:          id,
-				CreatedAt:   timeNow,
-				UpdatedAt:   timeNow,
-				Title:       testSQLNullStr,
-				Url:         testStr,
-				Description: testSQLNullStr,
-				PublishedAt: testSQLNullTime,
+				CreatedAt:   now,
+				UpdatedAt:   now,
+				Title:       nullStr,
+				Url:         str,
+				Description: nullStr,
+				PublishedAt: nullTimeNow,
 				FeedID:      id,
 			},
 			expect: Post{
 				ID:          id,
-				CreatedAt:   timeNow,
-				UpdatedAt:   timeNow,
-				Title:       testStr,
-				Url:         testStr,
-				Description: testStr,
-				PublishedAt: timeNow,
+				CreatedAt:   now,
+				UpdatedAt:   now,
+				Title:       str,
+				Url:         str,
+				Description: str,
+				PublishedAt: now,
 				FeedID:      id,
 			},
 		},
 	}
 
 	for i, test := range tests {
-		t.Run(fmt.Sprintf("Test Case #%v:", i), func(t *testing.T) {
+		t.Run(fmt.Sprintf("TestDBPostToPost Case #%v:", i), func(t *testing.T) {
 			output := databasePostToPost(test.input)
 			if output != test.expect {
-				t.Errorf("Unexpected:\n%v", output)
+                t.Errorf("Unexpected: TestDBPostToPost: \n%v", output)
 				return
 			}
 		})

@@ -22,7 +22,7 @@ func (cfg *apiConfig) handlerFollowsCreate(w http.ResponseWriter, r *http.Reques
 	feedID := uuid.MustParse(followParams.FeedID)
 	userID := user.ID
 	id := uuid.New()
-	now := time.Now()
+	now := time.Now().UTC()
 	ctx := context.Background()
 
 	follow, err := cfg.DB.CreateFollow(ctx, database.CreateFollowParams{

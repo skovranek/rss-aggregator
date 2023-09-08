@@ -13,7 +13,7 @@ import (
 
 func (cfg *apiConfig) createPost(ctx context.Context, feedID uuid.UUID, item Item) error {
 	id := uuid.New()
-	now := time.Now()
+	now := time.Now().UTC()
 
 	titleNullStr, err := strPtrToSQLNullStr(item.Title)
 	if err != nil {
