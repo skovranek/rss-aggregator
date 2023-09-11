@@ -9,7 +9,7 @@ import (
 
 func (cfg *apiConfig) getFeedsToFetch() ([]Feed, error) {
 	ctx := context.Background()
-	dbFeeds, err := cfg.DB.GetNextFeedsToFetch(ctx, cfg.Limit)
+	dbFeeds, err := cfg.DB.GetNextFeedsToFetch(ctx, cfg.limit)
 	if err != nil {
 		err = fmt.Errorf("cfg.DB.GetNextFeedsToFetch: %v", err)
 		return []Feed{}, err

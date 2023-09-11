@@ -1,22 +1,8 @@
 package main
 
 import (
-	"time"
-
-	"github.com/google/uuid"
-
 	"github.com/skovranek/rss_aggregator/internal/database"
 )
-
-type Feed struct {
-	ID            uuid.UUID
-	CreatedAt     time.Time
-	UpdatedAt     time.Time
-	Name          string
-	Url           string
-	UserID        uuid.UUID
-	LastFetchedAt time.Time
-}
 
 func databaseFeedToFeed(dbFeed database.Feed) Feed {
 	return Feed{

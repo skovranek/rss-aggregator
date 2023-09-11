@@ -6,10 +6,6 @@ import (
 	"io"
 )
 
-type UserParams struct {
-	Name string `json:"name"`
-}
-
 func getUserParams(readCloser io.ReadCloser) (UserParams, error) {
 	decoder := json.NewDecoder(readCloser)
 	userParams := UserParams{}

@@ -44,7 +44,7 @@ func (cfg *apiConfig) handlerFeedsCreate(w http.ResponseWriter, r *http.Request,
 
 	followID := uuid.New()
 
-	follow, err := cfg.DB.CreateFollow(ctx, database.CreateFollowParams{
+	dbFollow, err := cfg.DB.CreateFollow(ctx, database.CreateFollowParams{
 		ID:        followID,
 		FeedID:    feed.ID,
 		UserID:    userID,
@@ -57,9 +57,11 @@ func (cfg *apiConfig) handlerFeedsCreate(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
+	follow := databaseFollowToFollow(dbFollow)
+
 	respBody := struct {
-		Feed   Feed                `json:"feed"`
-		Follow database.FeedFollow `json:"feed_follow"`
+		Feed   Feed   `json:"feed"`
+		Follow Follow `json:"feed_follow"`
 	}{
 		Feed:   feed,
 		Follow: follow,

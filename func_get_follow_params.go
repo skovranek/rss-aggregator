@@ -6,10 +6,6 @@ import (
 	"io"
 )
 
-type FollowParams struct {
-	FeedID string `json:"feed_id"`
-}
-
 func getFollowParams(readCloser io.ReadCloser) (FollowParams, error) {
 	decoder := json.NewDecoder(readCloser)
 	followParams := FollowParams{}

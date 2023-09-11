@@ -7,23 +7,6 @@ import (
 	"net/http"
 )
 
-type RSS struct {
-	URL     string `xml:"url"`
-	Channel struct {
-		Title         *string `xml:"title"`
-		Description   *string `xml:"description"`
-		LastBuildDate *string `xml:"lastBuildDate"`
-		Items         []Item  `xml:"item"`
-	} `xml:"channel"`
-}
-
-type Item struct {
-	Title       *string `xml:"title"`
-	Link        string  `xml:"link"`
-	PubDate     *string `xml:"pubDate"`
-	Description *string `xml:"description"`
-}
-
 func fetchRSSFromURL(URL string) (RSS, error) {
 	response, err := http.Get(URL) //#nosec G107
 	if err != nil {
