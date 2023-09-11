@@ -25,8 +25,8 @@ func TestHandlerFeedsCreate(t *testing.T) {
 	}
 
 	dbURL := os.Getenv("CONN")
-	dbQueries, db := database.InitDB(dbURL)
-	defer db.Close()
+	dbQueries, dbClose := database.InitDB(dbURL)
+	defer dbClose()
 
 	cfg := apiConfig{
 		DB: dbQueries,

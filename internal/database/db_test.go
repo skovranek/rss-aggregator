@@ -19,8 +19,8 @@ func TestDB(t *testing.T) {
 		log.Fatal(`Error: database_test.go: godotenv.Load(): cannot load ".env" file`)
 	}
 	dbURL := os.Getenv("CONN")
-	dbQueries, db := InitDB(dbURL)
-	defer db.Close()
+	dbQueries, dbClose := InitDB(dbURL)
+	defer dbClose()
 
 	t.Run("TestDB", func(t *testing.T) {
 		_, err := dbQueries.db.ExecContext(context.Background(), CHECK_DB_CONNECTION)

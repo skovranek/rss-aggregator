@@ -5,9 +5,9 @@ import (
 )
 
 func configure() (*apiConfig, database.CloseDB) {
-    port, dbURL, limit := loadEnvVars()
+	port, dbURL, limit := loadEnvVars()
 
-    dbQueries, dbClose := database.InitDB(dbURL)
+	dbQueries, dbClose := database.InitDB(dbURL)
 
 	return &apiConfig{
 		DB:    dbQueries,

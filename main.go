@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	// "time"
+	"time"
 )
 
 func main() {
@@ -10,7 +10,7 @@ func main() {
 
 	defer dbClose()
 
-	//	go cfg.scrapeFeeds(time.Minute)
+	go cfg.scrapeFeeds(time.Minute)
 
 	srv := cfg.createServer()
 
